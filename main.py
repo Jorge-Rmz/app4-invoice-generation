@@ -1,16 +1,18 @@
-# This is a sample Python script.
+import pandas as pd
+import glob
+from fpdf import FPDF
+from pathlib import Path
 
-# Press Mayús+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+filespaths = glob.glob("invoices/*.xlsx")
+
+for filepath in filespaths:
+    df = pd.read_excel(filepath, sheet_name="Sheet 1")
+    pdf = FPDF(orientation="P", unit="mm", format="A4")
+    pdf.add_page()
+    filename = Path(filepath).stem
+    filename_split = filename.split("-")
+    pdf.set_font(family="Times", size=16, style="B")
+    pdf.cell(w=50, h=8, txt=f"Invoice nr. {filename_split[0]}")
+    pdf.output(f"PDFs/{filename}.pdf")
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
